@@ -346,3 +346,94 @@ graph TD
 ``` 
 
 
+
+# Práctica SQL Injection y Hardening
+
+## Descripción
+
+Este proyecto corresponde a una práctica académica enfocada en la identificación, explotación controlada y mitigación de vulnerabilidades de SQL Injection en aplicaciones web desarrolladas con Python y FastAPI.
+
+El objetivo principal fue comprender el impacto de esta vulnerabilidad y aplicar mecanismos de protección para fortalecer la seguridad de la aplicación.
+
+---
+
+## Objetivos
+
+* Comprender el funcionamiento de los ataques SQL Injection.
+* Identificar vulnerabilidades en consultas SQL.
+* Implementar medidas de hardening.
+* Aplicar consultas parametrizadas para prevenir ataques.
+* Validar la efectividad de los controles implementados.
+
+---
+
+## Tecnologías utilizadas
+
+* Python 3.12
+* FastAPI
+* SQLite
+* Git
+* GitHub
+* GitHub Codespaces
+
+---
+
+## Vulnerabilidad identificada
+
+Durante el análisis se identificó que la aplicación construía consultas SQL utilizando directamente los datos ingresados por el usuario, permitiendo potencialmente la ejecución de código SQL malicioso.
+
+### Riesgos asociados
+
+* Acceso no autorizado.
+* Alteración de información.
+* Divulgación de datos sensibles.
+* Compromiso de la integridad de la base de datos.
+
+---
+
+## Medidas de Hardening implementadas
+
+Para mitigar la vulnerabilidad se aplicaron las siguientes acciones:
+
+* Uso de consultas parametrizadas.
+* Validación de entradas del usuario.
+* Manejo seguro de errores.
+* Restricción de información sensible en las respuestas.
+* Aplicación de buenas prácticas de desarrollo seguro.
+
+---
+
+## Resultados obtenidos
+
+Antes de aplicar las medidas de seguridad, fue posible alterar el comportamiento de las consultas SQL mediante entradas manipuladas.
+
+Después de implementar las medidas de hardening:
+
+✅ Los intentos de SQL Injection fueron bloqueados.
+
+✅ La aplicación mantuvo el comportamiento esperado.
+
+✅ Se redujo significativamente la superficie de ataque.
+
+✅ Se fortaleció la seguridad del sistema.
+
+---
+
+## Evidencias y archivos de la práctica
+
+Las evidencias correspondientes al desarrollo de la práctica se encuentran organizadas dentro de la carpeta practica_sql del repositorio.
+
+En esta carpeta se pueden consultar:
+
+Código fuente de la aplicación.
+Implementación de las medidas de hardening.
+Configuración del entorno de desarrollo.
+Archivos utilizados durante las pruebas de SQL Injection.
+Evidencias del funcionamiento y validación de las correcciones realizadas.
+
+La estructura del proyecto permite revisar de manera detallada cada una de las actividades desarrolladas durante la práctica.
+---
+
+
+
+
