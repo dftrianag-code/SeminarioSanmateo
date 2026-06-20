@@ -1,0 +1,27 @@
+# Control de versiones
+.git/
+.gitignore
+
+# Variables de entorno
+.env
+*.env
+
+# Caché Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Backups y logs
+backups/
+*.log
+server.log
+
+# Documentación
+*.md
+docs/

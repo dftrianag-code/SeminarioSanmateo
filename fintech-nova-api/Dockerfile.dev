@@ -1,0 +1,17 @@
+# Imagen completa para desarrollo
+FROM python:3.11
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Copiar dependencias
+COPY requirements-dev.txt .
+
+# Instalar dependencias
+RUN pip install --no-cache-dir -r requirements-dev.txt
+
+# Puerto
+EXPOSE 8000
+
+# Hot Reload
+CMD ["uvicorn","main:app","--host","0.0.0.0","--port","8000","--reload"]

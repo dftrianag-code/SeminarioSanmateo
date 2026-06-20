@@ -1,86 +1,73 @@
-backup_db.sh — Script completo de backup 
+#!/bin/bash
 
-#!/bin/bash 
+# ════════════════════════════════════════════════════════════
+# Script: backup_db.sh | FinTech Nova | Sesión 13 - Lab 3
+# Propósito: Respaldar database.db con timestamp y limpiar backups viejos
+# Uso: ./backup_db.sh
+# Cron: 0 2 * * * /ruta/completa/backup_db.sh
+# ════════════════════════════════════════════════════════════
 
-# ───────────────────────────────────────────────────────────────────── 
-# Script: backup_db.sh 
-# Descripción: Crea un backup comprimido de la base de datos de FinTech Nova 
-# Uso: ./backup_db.sh 
-# Cron: 0 2 * * * /ruta/completa/backup_db.sh  (ejecutar a las 2AM diariamente) 
-# ───────────────────────────────────────────────────────────────────── 
+# ── SECCIÓN 1: Variables del script ─────────────────────────
 
-# ── SECCIÓN 1: Definición de variables ─────────────────────────────── 
+DB_FILE="database.db" # Nombre del archivo a respaldar
+BACKUP_DIR="backups" # Carpeta donde guardar los backups
+RETENTION_DAYS=7 # Días de backups a conservar
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S") # Ej: 2024-11-15_02-30-00
+BACKUP_FILE="backup_${TIMESTAMP}.tar.gz" # Nombre único del backup
 
-DB_FILE="database.db" 
+# ── SECCIÓN 2: Función de logging ───────────────────────────
 
-BACKUP_DIR="backups" 
+log() {
+    echo "[$(date +"%H:%M:%S")] $1"
+}
 
-TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S") 
+# ── SECCIÓN 3: Verificaciones previas ───────────────────────
 
-BACKUP_NAME="backup_${TIMESTAMP}.tar.gz" 
+log "Iniciando backup de FinTech Nova..."
+if [ ! -f "$DB_FILE" ]; then
+    log "ERROR: No se encontró $DB_FILE. Abortando."
+    exit 1
+fi
 
-# ── SECCIÓN 2: Verificación de prerequisitos ───────────────────────── 
+# Calcular tamaño del archivo antes del backup
 
-echo "[$(date '+%H:%M:%S')] Iniciando backup de FinTech Nova..." 
-  
-if [ ! -f "$DB_FILE" ]; then 
+DB_SIZE=$(du -sh "$DB_FILE" | cut -f1)
 
-    echo "[ERROR] No se encontró el archivo: $DB_FILE" 
+log "Archivo encontrado: $DB_FILE ($DB_SIZE)"
 
-    echo "[ERROR] Asegúrate de ejecutar el script desde la carpeta del proyecto." 
+# ── SECCIÓN 4: Crear directorio de backups ───────────────────
 
-    exit 1  # Terminar con código de error 
+if [ ! -d "$BACKUP_DIR" ]; then
+    log "Creando directorio de backups: $BACKUP_DIR"
+    mkdir -p "$BACKUP_DIR"
+fi
 
-fi 
+# ── SECCIÓN 5: Crear el backup comprimido ────────────────────
 
-# ── SECCIÓN 3: Crear carpeta de destino si no existe ───────────────── 
+log "Creando backup: $BACKUP_DIR/$BACKUP_FILE"
+tar -czf "$BACKUP_DIR/$BACKUP_FILE" "$DB_FILE"
 
-if [ ! -d "$BACKUP_DIR" ]; then 
+# $? contiene el código de salida del último comando (0 = éxito)
 
-    echo "[INFO] Creando carpeta de backups: $BACKUP_DIR" 
+if [ $? -eq 0 ]; then
+    BACKUP_SIZE=$(du -sh "$BACKUP_DIR/$BACKUP_FILE" | cut -f1)
+    log "OK: Backup creado exitosamente ($BACKUP_SIZE)"
+else
+    log "ERROR: Falló la creación del backup. Revisa el espacio en disco."
+    exit 1
+fi
 
-    mkdir -p "$BACKUP_DIR" 
+# ── SECCIÓN 6: Limpiar backups antiguos ─────────────────────
 
-fi 
+BACKUP_COUNT=$(ls "$BACKUP_DIR"/*.tar.gz 2>/dev/null | wc -l)
 
-# ── SECCIÓN 4: Crear el backup comprimido ──────────────────────────── 
+log "Backups existentes: $BACKUP_COUNT (reteniendo últimos $RETENTION_DAYS)"
+find "$BACKUP_DIR" -name "*.tar.gz" -mtime "+$RETENTION_DAYS" -delete
+log "Limpieza de backups antiguos completada."
+log "Proceso de backup finalizado correctamente."
 
-echo "[INFO] Creando backup: $BACKUP_DIR/$BACKUP_NAME" 
-
-tar -czf "$BACKUP_DIR/$BACKUP_NAME" "$DB_FILE" 
-
-# ── SECCIÓN 5: Verificar resultado y reportar estado ───────────────── 
-
-if [ $? -eq 0 ]; then 
-
-    BACKUP_SIZE=$(du -sh "$BACKUP_DIR/$BACKUP_NAME" | cut -f1) 
-
-    echo "[OK] Backup completado exitosamente." 
-
-    echo "[OK] Archivo: $BACKUP_DIR/$BACKUP_NAME ($BACKUP_SIZE)" 
-
-else 
-
-    echo "[ERROR] El backup falló. Revisa los permisos y el espacio en disco." 
-
-    exit 1 
-
-fi 
-
-# ── SECCIÓN 6: Limpieza de backups antiguos (retener últimos 7) ────── 
-
-BACKUP_COUNT=$(ls -1 "$BACKUP_DIR"/*.tar.gz 2>/dev/null | wc -l) 
-
-if [ "$BACKUP_COUNT" -gt 7 ]; then 
-
-    echo "[INFO] Limpiando backups antiguos (conservando los últimos 7)..." 
-
-    ls -1t "$BACKUP_DIR"/*.tar.gz | tail -n +8 | xargs rm -f 
-
-fi 
-
-
-echo "[$(date '+%H:%M:%S')] Proceso de backup finalizado." 
+exit 0
 
 
 
+ls -l backup_db.sh
