@@ -419,6 +419,23 @@ Después de implementar las medidas de hardening:
 ✅ Se fortaleció la seguridad del sistema.
 
 ---
+## Fase 2 - Auditoría y Hardening
+
+Se realizó una auditoría básica de seguridad sobre la API, identificando la exposición del endpoint sensible y aplicando mecanismos de autenticación para restringir el acceso.
+
+El informe completo se encuentra en:
+
+```text
+practica_sql/auditoria.md
+```
+
+Las evidencias utilizadas durante las pruebas se encuentran en:
+
+```text
+practica_sql/evidencias/
+```
+
+Adicionalmente, se incluye el informe de la práctica de SQL Injection y Hardening desarrollada durante el laboratorio.
 
 ## Evidencias y archivos de la práctica
 
