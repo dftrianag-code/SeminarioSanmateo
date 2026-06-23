@@ -1,12 +1,27 @@
 from fastapi import FastAPI,Depends,HTTPException
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.security import APIKeyHeader
 import sqlite3
 
 
 app = FastAPI(
     title="Práctica SQL Injection y Hardening / FinTech Nova - Secure API Practice"
 )
+
+# Token de acceso
+API_KEY = "fintech2026"
+
+api_key_header = APIKeyHeader(name="x-api-key", auto_error=False)
+
+def verificar_token(api_key: str = Depends(api_key_header)):
+    if api_key != API_KEY:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized"
+        )
+    return api_key
+
 
 # ==================================================
 # MIDDLEWARE DE SEGURIDAD
@@ -20,7 +35,12 @@ async def add_security_headers(request, call_next):
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    response.headers["Content-Security-Policy"] = (
+    "default-src 'self'; "
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "img-src 'self' data: https://fastapi.tiangolo.com;"
+    )   
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     return response
 
@@ -69,7 +89,10 @@ def get_user_vulnerable(username: str):
 
 
 @app.get("/secure/users/{username}")
-def get_user_secure(username: str):    
+def get_user_secure(
+    username: str,
+    api_key: str = Depends(verificar_token)
+    ):   
     conn = get_db()     
     cursor = conn.cursor()     
     # ✅ FORMA SEGURA: Parametrización    
