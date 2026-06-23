@@ -37,7 +37,7 @@ Resultados obtenidos:
 
 Imagen:
 
-`evidencias/1_nmap.png`
+`practica_sql/evidencias/1_nmap.png`
 
 ---
 
