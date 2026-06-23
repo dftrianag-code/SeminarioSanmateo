@@ -347,6 +347,7 @@ graph TD
 
 
 
+# LABORATORIO 2
 # Práctica SQL Injection y Hardening
 
 ## Descripción
