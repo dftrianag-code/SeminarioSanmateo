@@ -2,4 +2,3 @@ fastapi
 uvicorn
 psutil
 pydantic
-requests==2.6.0
