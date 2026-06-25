@@ -7,6 +7,14 @@ app = FastAPI(
  description="API de evaluacion de riesgo crediticio",
  version="1.0.0"
 )
+# ==================================================
+# HOME
+# ==================================================
+
+@app.get("/")
+def read_root():
+    return {"mensaje": "Bienvenido a la API de Análisis. El sistema está en línea. PRACTICA SQL INJECTION"}
+
 
 # Endpoint de verificación de salud
 @app.get("/health")
