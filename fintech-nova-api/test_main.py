@@ -51,8 +51,15 @@ class TestEvaluacionRiesgo:
 
 
 class TestDatosFinancieros:
-    def test_obtener_historial_cliente(self):
+    def test_sin_token_retorna_401(self):
         resp = client.get("/datos-financieros/123")
+        assert resp.status_code == 401
+
+    def test_con_token_valido_retorna_200(self):
+        resp = client.get(
+            "/datos-financieros/123",
+            headers={"x-api-key": "fintech2026"},
+        )
         assert resp.status_code == 200
         assert resp.json()["cliente_id"] == 123
         assert resp.json()["historial"] == "Limpio"
