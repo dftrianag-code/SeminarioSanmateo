@@ -244,6 +244,12 @@ pytest test_main.py -v
 
 El badge al inicio de este README refleja el estado del último run. El historial completo de ejecuciones está disponible en la pestaña [Actions](https://github.com/dftrianag-code/SeminarioSanmateo/actions) del repositorio.
 
+### Diagrama Arquitectónico To-Be
+
+El siguiente diagrama representa el estado final del sistema de evaluación de riesgo crediticio de FinTech Nova, desplegado en GitHub Codespaces, con los controles de seguridad, contenerización o automatización:
+
+![diagrama-to-be](docs/Diagramas/diagrama-to-be.png)
+
 ---
 
 ## Tecnologías Utilizadas

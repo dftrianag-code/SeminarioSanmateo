@@ -65,3 +65,4 @@ def obtener_historial(id_cliente: int, api_key: str = Depends(verificar_token)):
         "historial": "Limpio",
         "score_interno": 750
     }
+# Comentario agregado para demo en vivo Thu Jun 25 05:51:04 UTC 2026
