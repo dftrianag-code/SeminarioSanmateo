@@ -67,3 +67,4 @@ def obtener_historial(id_cliente: int, api_key: str = Depends(verificar_token)):
     }
 # Comentario agregado para demo en vivo Thu Jun 25 05:51:04 UTC 2026
 # Comentario agregado para demo en vivo Thu Jun 25 13:28:56 UTC 2026
+# Comentario agregado para demo en vivo Fri Jun 26 01:47:10 UTC 2026
